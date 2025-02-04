@@ -1,5 +1,7 @@
-export default function Home() {
+import React from 'react';
+
+export default function page() {
   return (
-    <div className="text-red-500">Home</div>
-  );
+    <div>Home</div>
+  ); // Corrected the syntax error by removing the 's'
 }
