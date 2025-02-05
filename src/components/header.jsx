@@ -1,5 +1,6 @@
 import { FaSearch } from 'react-icons/fa';
 import Link from 'next/link';
+import { ClerkProvider, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Header() {
   return (
@@ -18,23 +19,29 @@ export default function Header() {
           </button>
         </form>
         <ul className='flex gap-4'>
-            <Link href="/">
+          <Link href="/">
             <li className='hidden md:inline text-slate-700 hover:underline'>
               Home
-              </li>
-            </Link>       
-            <Link href="/about">
-              <li className='hidden sm:inline text-slate-700 hover:underline'>
-                About
-                </li>
-            </Link>
+            </li>
+          </Link>       
+          <Link href="/about">
+            <li className='hidden sm:inline text-slate-700 hover:underline'>
+              About
+            </li>
+          </Link>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          <SignedOut>
             <Link href="/sign-in">
               <li className='hidden sm:inline text-slate-700 hover:underline'>
                 Sign in
-                </li>
+              </li>
             </Link>
+          </SignedOut>
         </ul>
       </div>
     </header>
   );
+
 }
