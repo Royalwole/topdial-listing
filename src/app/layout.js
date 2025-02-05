@@ -1,10 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";  // Ensure this path is correct
-import { ClerkProvider, SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton } from '@clerk/nextjs';
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
