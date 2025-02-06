@@ -1,24 +1,23 @@
-name: Publish Website to cPanel
+name: Deploy to cPanel
 
 on:
   push:
     branches:
-      - main
+      - main  # Change this to your deployment branch if different
 
 jobs:
-  FTP-Deploy-Action:
-    name: FTP Deployment to cPanel
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+        uses: actions/checkout@v3
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0  # Updated to latest version
-        with:  
-          ftp-username: ${{ secrets.FTP_FLOW }}  
-          ftp-password: ${{ secrets.FTP_UNIX }}
-          ftp-server: ${{ secrets.UNIXFLOW }}
-          
+      - name: Deploy to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./  # Adjust this if your build artifacts are in a subdirectory
+          server-dir: /home/topdialn
