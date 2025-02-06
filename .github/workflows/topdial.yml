@@ -1,30 +1,23 @@
 name: Publish
 
-jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy- Website to CPanel
-
 on:
   push:
     branches:
       - main
 
 jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+  deploy-website: # Unique job name
+    name: FTP-Deploy-Website to CPanel
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v2 # or v3
         with:
-          fetch-depth: 2
-      - name: FTP-Deploy-Action
-    runs-on: ubuntu-latest
-    steps:
-     Action
+          fetch-depth: 0 # often a good idea if you want to deploy everything
+      - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: ${{ secrets.UNIXFLOW }}
           username: ${{ secrets.FTP_FLOW }}
           password: ${{ secrets.FTP_UNIX }}
-          local-dir: ./
-          server-dir: /home/topdialn/unix/
+          local-dir: ./ # Or a more specific path like ./build or ./dist
+          server-dir: /home/topdialn/unix/ # or remote-dir if that's how your server is set up.
