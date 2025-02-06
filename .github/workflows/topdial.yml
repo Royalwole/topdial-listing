@@ -16,10 +16,13 @@ jobs:
           fetch-depth: 2
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.4  # Updated to latest version
         with:
-          ftp-server: ${{ secrets.UNIXFLOW }}
-          ftp-username: ${{ secrets.FTP_FLOW }}
-          ftp-password: ${{ secrets.FTP_UNIX }}
-          local-dir: ./
-          server-dir: /public_html/  # Ensure this is the correct path for your site
+          ftp-server: ftp.topdial.ng  # Should be ftp.yourdomain.com
+          ftp-username: ${{ secrets.FTP_USERNAME }}  # Usually full cPanel username
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./                          # Verify build directory
+          server-dir: /home/topdialn               # Remove leading slash
+          git-ftp: true
+          dangerous-clean-slate: true           # Cleans server directory first
+          ftp-passive: true                     # Enable passive mode
