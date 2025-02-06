@@ -1,0 +1,23 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main  # Change this to your deployment branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.UNIXFLOW }}
+          username: ${{ secrets.FTP_FLOW }}
+          password: ${{ secrets.FTP_UNIX }}
+          local-dir: ./  # Adjust this if your build artifacts are in a subdirectory
+          server-dir: /topdial-real  # Adjust to your target directory
