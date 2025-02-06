@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2.1.0
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
