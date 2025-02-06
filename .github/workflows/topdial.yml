@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      Action
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3
         with:
           server: ${{ secrets.UNIXFLOW }}
           username: ${{ secrets.FTP_FLOW }}
