@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 2
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5  # Updated to latest version
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0  # Updated to latest version
         with:
           ftp-server: ftp.topdial.ng  # Should be ftp.yourdomain.com
           ftp-username: ${{ secrets.FTP_USERNAME }}  # Usually full cPanel username
