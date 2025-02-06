@@ -21,8 +21,4 @@ jobs:
           ftp-server: ${{ secrets.UNIXFLOW }}  
           ftp-username: ${{ secrets.FTP_FLOW }}  
           ftp-password: ${{ secrets.FTP_UNIX }}
-          local-dir: ./                         
-          server-dir: /home/topdialn              
-          git-ftp: true
-          dangerous-clean-slate: true           # Cleans server directory first
-          ftp-passive: true                     # Enable passive mode
+          
