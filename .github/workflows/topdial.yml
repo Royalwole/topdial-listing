@@ -1,4 +1,4 @@
-name: Publish Website to CPanel
+name: Publish Website to cPanel
 
 on:
   push:
@@ -7,15 +7,19 @@ on:
 
 jobs:
   FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+    name: FTP Deployment to cPanel
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
+      - name: Checkout Repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: FTP-Deploy-Action
+
+      - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           ftp-server: ${{ secrets.UNIXFLOW }}
           ftp-username: ${{ secrets.FTP_FLOW }}
           ftp-password: ${{ secrets.FTP_UNIX }}
+          local-dir: ./
+          server-dir: /public_html/  # Ensure this is the correct path for your site
