@@ -20,4 +20,4 @@ jobs:
           username: ${{ secrets.FTP_FLOW }}
           password: ${{ secrets.FTP_UNIX }}
           local-dirThe failure in your GitHub Actions job is due to an incorrect FTP server configuration. The error message: ./
-          server-dir: /topdial-real/
+          server-dir: /home/topdialn/unix/
