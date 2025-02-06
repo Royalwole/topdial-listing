@@ -16,8 +16,8 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: ${{ secrets.UNIXFLOW }}
-          username: ${{ secrets.FTP_FLOW }}
-          password: ${{ secrets.FTP_UNIX }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./ # Or a more specific path like ./build or ./dist
           server-dir: /home/topdialn/unix/ # or remote-dir if that's how your server is set up.
