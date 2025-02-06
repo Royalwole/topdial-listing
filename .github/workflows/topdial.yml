@@ -18,10 +18,10 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.0  # Updated to latest version
         with:
-          ftp-server: ftp.topdial.ng  
+          ftp-server: ${{ secrets.UNIXFLOW }}  
           ftp-username: ${{ secrets.FTP_FLOW }}  
           ftp-password: ${{ secrets.FTP_UNIX }}
-          local-dir: ./                         y
+          local-dir: ./                         
           server-dir: /home/topdialn              
           git-ftp: true
           dangerous-clean-slate: true           # Cleans server directory first
