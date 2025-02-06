@@ -20,4 +20,4 @@ jobs:
           username: ${{ secrets.FTP_FLOW }}
           password: ${{ secrets.FTP_UNIX }}
           local-dir: ./  # Adjust this if your build artifacts are in a subdirectory
-          server-dir: /topdial-real  # Adjust to your target directory
+          server-dir: /topdialn  # Adjust to your target directory
