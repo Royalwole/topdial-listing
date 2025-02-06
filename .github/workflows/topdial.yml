@@ -6,18 +6,20 @@ on:
       - main
 
 jobs:
-  deploy-website: # Unique job name
-    name: FTP-Deploy-Website to CPanel
+  ftp-deploy:
+    name: FTP Deploy Website to CPanel
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2 # or v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2.1.0
         with:
-          fetch-depth: 0 # often a good idea if you want to deploy everything
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+          fetch-depth: 2
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./ # Or a more specific path like ./build or ./dist
-          server-dir: /home/topdialn/unix/ # or remote-dir if that's how your server is set up.
+          server: ${{ secrets.UNIXFLOW }}
+          username: ${{ secrets.FTP_FLOW }}
+          password: ${{ secrets.FTP_UNIX }}
+          local-dir: ./
+          server-dir: /home/topdialn/unix/
