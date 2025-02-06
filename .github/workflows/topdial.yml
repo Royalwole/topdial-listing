@@ -1,19 +1,25 @@
 name: Publish Website to CPanel
+
 on:
   push:
     branches:
       - main
+
 jobs:
   FTP-Deploy-Action:
     name: FTP-Deploy-Action
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.1.0
-      with:
-        fetch-depth: 2
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
-      with:
-        ftp-server: ${{ secrets.FTP_SERVER }}
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
+      - name: Checkout code
+        uses: actions/checkout@v2.1.0
+        with:
+          fetch-depth: 2
+
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}  # Correct key for server
+          username: ${{ secrets.FTP_USERNAME }}  # Correct key for username
+          password: ${{ secrets.FTP_PASSWORD }}  # Correct key for password
+          local-dir: ./  # Specify the local directory to upload
+          server-dir: //home/topdialn/unix/  # Specify the target directory on the server (optional)
