@@ -20,4 +20,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./  # Adjust this if your build artifacts are in a subdirectory
-          server-dir: /home/topdialn/
+          server-dir: /home/topdialn/unix/
