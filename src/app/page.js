@@ -1,10 +1,8 @@
-import React from 'react';
-
-export default function page() {
+export default function Page() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
-        Welcome to Topdial Services
+        Welcome to Topdial updated
       </h1>
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <p className="text-gray-700">
