@@ -13,7 +13,8 @@
     "next": "15.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^5.4.0"
+    "react-icons": "^5.4.0",
+    "svix": "^1.57.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.26.8",
