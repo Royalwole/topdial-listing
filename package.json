@@ -11,8 +11,8 @@
   "dependencies": {
     "@clerk/nextjs": "^6.11.3",
     "next": "15.1.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-icons": "^5.4.0"
   },
   "devDependencies": {
@@ -20,9 +20,11 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "postcss": "^8",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.1"
   },
   "overrides": {
-    "@clerk/shared": "2.20.18"
+    "@clerk/shared": "2.20.18",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
