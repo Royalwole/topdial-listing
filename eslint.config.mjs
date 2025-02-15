@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import js from '@eslint/js';
 import nextPlugin from '@next/eslint-plugin-next';
 import babelParser from '@babel/eslint-parser';
