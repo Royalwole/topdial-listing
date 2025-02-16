@@ -1,5 +1,8 @@
+/* eslint-disable no-console */
+/* global process */
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
+
 
 
 export async function POST(req) {
@@ -47,8 +50,8 @@ export async function POST(req) {
 
   // Do something with payload
   // For this guide, log payload to console
-  const { id } = evt.data
-  const eventType = evt.type
+  
+
   
 
 if (evt.type === 'user.created') {
