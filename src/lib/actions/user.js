@@ -10,7 +10,7 @@ export const createdOrUpdateUser = async (
     email_addresses
 ) => {
     try {
-await connect();
+        await connect();
         const user = await User.findOneAndUpdate(
             { clerkId: id },
             {
@@ -20,20 +20,23 @@ await connect();
                     profilePicture: image_url,
                     email: email_addresses[0].email,
                 },
-            }, {upsert: true, new:true}
+            },
+            { upsert: true, new: true }
         );
         return user;
     } catch (error) {
-console.log('Error: Could not create or update user', error);
+        console.error('Error: Could not create or update user', error);
+        throw error;
     }
 };
 
+
 export const deleteUser = async (id) => {
     try {
-await connect();
+        await connect();
         await User.findOneAndDelete({ clerkId: id });
-    }
-    catch (error) {
-console.log('Error: Could not delete user', error);
+    } catch (error) {
+        console.error('Error: Could not delete user', error);
+        throw error;
     }
 };
