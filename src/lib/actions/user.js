@@ -1,5 +1,6 @@
 import User from '../models/user.model';
-import mongoose from '../mongodb/mongoose';
+import connect from '../mongodb/mongoose';
+
 
 export const createdOrUpdateUser = async (
     id,
