@@ -1,5 +1,8 @@
 module.exports = {
   plugins: ['@next/next', '@typescript-eslint'],
+  env: {
+    node: true
+  },
   extends: [
     'eslint:recommended',
     'plugin:@next/next/recommended',
@@ -21,13 +24,13 @@ module.exports = {
     }
   },
   rules: {
+    'no-undef': 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'off'
+    '@typescript-eslint/no-unused-vars': 'warn',
+    'no-redeclare': 'off'
   },
-
   globals: {
     process: 'readonly',
     console: 'readonly'
   }
-
 };
