@@ -1,22 +1,19 @@
 module.exports = {
-  plugins: ['@next/next'],
+  plugins: ['@next/next', '@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@next/next/recommended',
     'plugin:@next/next/core-web-vitals',
-    'next'
+    'plugin:@typescript-eslint/recommended'
   ],
-  parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true
     },
     ecmaVersion: 'latest',
     sourceType: 'module',
-    requireConfigFile: false,
-    babelOptions: {
-      presets: ['next/babel']
-    }
+    project: './tsconfig.json'
   },
   settings: {
     react: {
