@@ -1,12 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from 'db/storage';
-import { app } from '../../../db';
+import { uploadFile } from '../../../db/storage';
+
+
 import { useUser } from '@clerk/nextjs';
 import { useRouter, usePathname } from 'next/navigation';
 export default function UpdateListing() {
@@ -80,29 +76,10 @@ export default function UpdateListing() {
     }
   };
   const storeImage = async (file) => {
-    return new Promise((resolve, reject) => {
-      const storage = getStorage(app);
-      const fileName = new Date().getTime() + file.name;
-      const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
-        },
-        (error) => {
-          reject(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            resolve(downloadURL);
-          });
-        }
-      );
-    });
+    const fileName = new Date().getTime() + file.name;
+    return await uploadFile(file, fileName);
   };
+
   const handleRemoveImage = (index) => {
     setFormData({
       ...formData,

@@ -5,7 +5,8 @@ import { useEffect, useState, Suspense } from 'react';
 import ListingItem from '../../components/Listingitem';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-function SearchContent() {
+export default function SearchPage() {
+
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -18,9 +19,11 @@ function SearchContent() {
     sort: 'created_at',
     order: 'desc',
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [listings, setListings] = useState([]);
   const [showMore, setShowMore] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(searchParams);
     const searchTermFromUrl = urlParams.get('searchTerm');
@@ -89,8 +92,16 @@ function SearchContent() {
     }
   };
 
-    fetchListings();
-  }, [searchParams]);
+    if (initialLoad) {
+      setTimeout(() => {
+        fetchListings();
+        setInitialLoad(false);
+      }, 1000);
+    } else {
+      fetchListings();
+    }
+  }, [searchParams, initialLoad]);
+
   const handleChange = (e) => {
     if (
       e.target.id === 'all' ||
@@ -156,7 +167,14 @@ function SearchContent() {
   };
 
   return (
-    <div className='flex flex-col md:flex-row'>
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    }>
+
+      <div className='flex flex-col md:flex-row'>
+
       <div className='p-7  border-b-2 md:border-r-2 md:min-h-screen'>
         <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
           <div className='flex items-center gap-2'>
@@ -285,6 +303,7 @@ function SearchContent() {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </Suspense>
   );
 }

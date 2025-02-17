@@ -1,18 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-
-import { app } from '../../db';
-
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'db/storage';
-
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export default function CreateListing() {
   const { isSignedIn, user, isLoaded } = useUser();
@@ -37,58 +34,73 @@ export default function CreateListing() {
     furnished: false,
   });
 
-  console.log(formData);
-
-  const handleImageSubmit = (e) => {
-    if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
-      setUploading(true);
-      setImageUploadError(false);
-      const promises = [];
-      for (let i = 0; i < files.length; i++) {
-        promises.push(storeImage(files[i]));
+  const storeImage = async (file) => {
+    try {
+      // Validate file size
+      const fileSize = file.size / (1024 * 1024);
+      if (fileSize > 2) {
+        throw new Error(`File "${file.name}" size (${fileSize.toFixed(2)}MB) exceeds 2MB limit`);
       }
-      Promise.all(promises)
-        .then((urls) => {
-          setFormData({
-            ...formData,
-            imageUrls: formData.imageUrls.concat(urls),
-          });
-          setImageUploadError(false);
-          setUploading(false);
-        })
-        .catch((err) => {
-          setImageUploadError('Image upload failed (2 mb max per image)');
-          setUploading(false);
+
+      // Convert file to buffer
+      const buffer = await file.arrayBuffer();
+      const fileData = new Uint8Array(buffer);
+
+      // Generate unique filename
+      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+
+      // Upload to Supabase
+      const { error: uploadError } = await supabase.storage
+        .from('topdialusrs')
+        .upload(`images/${fileName}`, fileData, {
+          contentType: file.type,
+          upsert: true
         });
-    } else {
-      setImageUploadError('You can only upload 6 images per listing');
-      setUploading(false);
+
+      if (uploadError) {
+        throw new Error(uploadError.message);
+      }
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('topdialusrs')
+        .getPublicUrl(`images/${fileName}`);
+
+      if (!urlData?.publicUrl) {
+        throw new Error('Failed to get public URL');
+      }
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Store image error:', error);
+      throw error;
     }
   };
 
-  const storeImage = async (file) => {
-    return new Promise((resolve, reject) => {
-      const storage = getStorage(app);
-      const fileName = new Date().getTime() + file.name;
-      const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
-        },
-        (error) => {
-          reject(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            resolve(downloadURL);
-          });
-        }
-      );
-    });
+  const handleImageSubmit = async (e) => {
+    e.preventDefault();
+    if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
+      setUploading(true);
+      setImageUploadError(false);
+      try {
+        const uploadPromises = Array.from(files).map(file => storeImage(file));
+        const urls = await Promise.all(uploadPromises);
+        
+        setFormData(prev => ({
+          ...prev,
+          imageUrls: [...prev.imageUrls, ...urls]
+        }));
+        setImageUploadError(false);
+        setFiles([]);
+      } catch (err) {
+        console.error('Upload error:', err);
+        setImageUploadError(err.message || 'Image upload failed (2mb max per image)');
+      } finally {
+        setUploading(false);
+      }
+    } else {
+      setImageUploadError('You can only upload 6 images per listing');
+    }
   };
 
   const handleRemoveImage = (index) => {
@@ -170,7 +182,6 @@ export default function CreateListing() {
       </h1>
     );
   }
-
 
   return (
     <main className='p-3 max-w-4xl mx-auto'>
@@ -342,6 +353,7 @@ export default function CreateListing() {
               }}
             />
             <button
+              type='button'
               disabled={uploading}
               onClick={handleImageSubmit}
               className='p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80'
