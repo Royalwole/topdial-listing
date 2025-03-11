@@ -3,13 +3,6 @@
 import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
 
 export default function CreateListing() {
   const { isSignedIn, user, isLoaded } = useUser();
@@ -36,41 +29,21 @@ export default function CreateListing() {
 
   const storeImage = async (file) => {
     try {
-      // Validate file size
-      const fileSize = file.size / (1024 * 1024);
-      if (fileSize > 2) {
-        throw new Error(`File "${file.name}" size (${fileSize.toFixed(2)}MB) exceeds 2MB limit`);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Upload failed');
       }
 
-      // Convert file to buffer
-      const buffer = await file.arrayBuffer();
-      const fileData = new Uint8Array(buffer);
-
-      // Generate unique filename
-      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
-
-      // Upload to Supabase
-      const { error: uploadError } = await supabase.storage
-        .from('topdialusrs')
-        .upload(`images/${fileName}`, fileData, {
-          contentType: file.type,
-          upsert: true
-        });
-
-      if (uploadError) {
-        throw new Error(uploadError.message);
-      }
-
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('topdialusrs')
-        .getPublicUrl(`images/${fileName}`);
-
-      if (!urlData?.publicUrl) {
-        throw new Error('Failed to get public URL');
-      }
-
-      return urlData.publicUrl;
+      const { url } = await response.json();
+      return url;
     } catch (error) {
       console.error('Store image error:', error);
       throw error;

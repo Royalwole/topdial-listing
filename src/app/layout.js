@@ -1,5 +1,6 @@
 import { Inter, Roboto_Mono } from "next/font/google";
 import Header from '../components/header';
+import Footer from '../components/Footer';
 import "./globals.css";
 import { ClerkProvider } from '@clerk/nextjs';
 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         <body className={`${inter.variable} ${robotoMono.variable} antialiased`}>
           <Header />
           {children}
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

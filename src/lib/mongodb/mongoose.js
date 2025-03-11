@@ -1,27 +1,45 @@
 import mongoose from 'mongoose';
 
-let  initialized = false;
+let isConnected = false;
 
 export const connect = async () => {
+  if (isConnected) return;
 
+  try {
     mongoose.set('strictQuery', true);
     
-    if (initialized) {
-        console.log('Already connected to MongoDB');
-        return;
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI is not defined');
     }
 
-    try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: 'topdial-services',
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        initialized = true;
-        console.log('MongoDB Connected');
-    } catch (error) {
-        console.error('MongoDB Connection Error:', error);
-    }
-}
+    const options = {
+      dbName: 'topdial-services',
+      autoIndex: true,
+      connectTimeoutMS: 10000,
+      retryWrites: true,
+      w: 'majority'
+    };
 
-export default { connect };
+    await mongoose.connect(process.env.MONGODB_URI, options);
+    isConnected = true;
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    // Retry connection after 5 seconds
+    setTimeout(() => connect(), 5000);
+  }
+};
+
+export const disconnect = async () => {
+  if (!isConnected) return;
+  
+  try {
+    await mongoose.disconnect();
+    isConnected = false;
+    console.log('MongoDB disconnected successfully');
+  } catch (error) {
+    console.error('MongoDB disconnection error:', error);
+  }
+};
+
+export default { connect, disconnect };
