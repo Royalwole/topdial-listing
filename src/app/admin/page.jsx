@@ -1,15 +1,26 @@
-'use client';
+import React from 'react';
+import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/router';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-
-export default function AdminPage() {
+const AdminPage = () => {
+  const { isSignedIn, user } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    // Redirect to the dashboard
-    router.push('/admin/dashboard');
-  }, [router]);
+  // Redirect if the user is not signed in
+  React.useEffect(() => {
+    if (!isSignedIn) {
+      router.push('/'); // Redirect to home if not authenticated
+    }
+  }, [isSignedIn, router]);
 
-  return null; // No content to render, as we are redirecting
-}
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <h1 className="text-4xl font-bold">Welcome to the Admin Page</h1>
+      {isSignedIn && user && (
+        <p className="mt-4">Hello, {user.firstName}!</p>
+      )}
+    </div>
+  );
+};
+
+export default AdminPage;

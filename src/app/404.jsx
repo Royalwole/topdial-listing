@@ -1,13 +1,15 @@
-'use client';
+import React from 'react';
 
-import { Suspense } from 'react';
-
-export default function Custom404() {
+const Custom404 = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="flex justify-center items-center min-h-screen">
-        <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
-      </div>
-    </Suspense>
+    <div className="flex items-center justify-center min-h-screen">
+      <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
+      <p className="mt-4">
+        Sorry, the page you are looking for does not exist. 
+        <a href="/" className="text-blue-500 hover:underline"> Go back to home.</a>
+      </p>
+    </div>
   );
-}
+};
+
+export default Custom404;
