@@ -1,3 +1,5 @@
+"use client"; // Added client directive
+
 import React from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
