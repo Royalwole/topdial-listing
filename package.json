@@ -9,12 +9,14 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.12.5",
+    "autoprefixer": "^10.4.2",
     "next": "latest",
+    "postcss": "^8.4.5",
+    "postcss-flexbugs-fixes": "^5.0.2",
     "react": "latest",
     "react-dom": "latest",
-    "tailwindcss": "^2.2.19",
-    "autoprefixer": "^10.4.2",
-    "postcss": "^8.4.5"
+    "tailwindcss": "^2.2.19"
   },
   "devDependencies": {
     "eslint": "latest",
