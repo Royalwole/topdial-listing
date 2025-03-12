@@ -5,13 +5,13 @@ import "./globals.css";
 import { ClerkProvider } from '@clerk/nextjs';
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  subsets: ['latin'],
+  display: 'swap',
 });
 
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
+const roboto_mono = Roboto_Mono({
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata = {
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.variable} ${robotoMono.variable} antialiased`}>
+        <body className={`${inter.className} ${roboto_mono.className} antialiased`}>
           <Header />
           {children}
           <Footer />
