@@ -5,7 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 export default function AdminDashboard() {
-  const { user, isLoaded } = useUser();
+  const { isLoaded } = useUser();
   const router = useRouter();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);

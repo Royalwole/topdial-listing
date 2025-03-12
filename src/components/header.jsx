@@ -5,7 +5,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Header() {
   const { user } = useUser();
@@ -43,7 +43,7 @@ export default function Header() {
     const searchQuery = urlParams.toString();
     router.push(`/search?${searchQuery}`);
   };
-  
+
   return (
     <header className="bg-slate-200 shadow-md relative">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
@@ -99,7 +99,9 @@ export default function Header() {
                   </Link>
                 </li>
               )}
-              <UserButton afterSignOutUrl="/" />
+              <UserButton 
+                afterSignOutCallback={() => router.push('/')}
+              />
             </SignedIn>
             <SignedOut>
               <li>

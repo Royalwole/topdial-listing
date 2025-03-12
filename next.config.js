@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const config = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
@@ -28,3 +29,5 @@ module.exports = {
     ]
   }
 };
+
+export default config;
